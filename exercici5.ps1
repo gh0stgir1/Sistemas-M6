@@ -1,25 +1,24 @@
 param(
-    [string]$ruta  # Parámetro que recibe la ruta a verificar
+    [string]$ruta = "C:\Users\Administrador\Documents"  # Parámetro que recibe la ruta a verificar
 )
 
-# Verificar si se proporcionó un argumento
+# Verificar si $ruta no está vacío
 if ([string]::IsNullOrEmpty($ruta)) {
-    Write-Host "Error: Se espera un parámetro que sea una ruta a verificar."
+    Write-Host "La ruta no puede estar vacía."
 }
 else {
     # Verificar si la ruta existe
     if (Test-Path $ruta) {
         # Verificar si la ruta es un directorio
         if (Test-Path -Path $ruta -PathType Container) {
-            Write-Host "El contenido del directorio $ruta es:"
-
-            # Listar el contenido del directorio
-            Get-ChildItem -Path $ruta | ForEach-Object {
-                Write-Host $_.Name
-            }
+            Write-Host "La ruta '$ruta' es un directorio."
+        }
+        # Verificar si la ruta es un archivo regular
+        elseif (Test-Path -Path $ruta -PathType Leaf) {
+            Write-Host "La ruta '$ruta' es un archivo regular."
         }
         else {
-            Write-Host "El argumento proporcionado no es un directorio."
+            Write-Host "La ruta '$ruta' no es ni un directorio ni un archivo regular."
         }
     }
     else {
